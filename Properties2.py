@@ -8,7 +8,7 @@ class Property:
     def __init__(self,
                  f_get: FunctionType = None,
                  f_set: FunctionType = None,
-                 f_del: FunctionType = None):
+                 f_del: FunctionType = None) -> None:
         self.get = f_get
         self.set = f_set
         self.delete = f_del
@@ -19,8 +19,11 @@ class Property:
     def __get__(self, obj, cls) -> Any:
         """Descriptor's getter method"""
         if obj is None:
+            # Called from a class.
+            # Returning Property object
             return self
         if self.get:
+            # self.get has been set.
             return self.get(obj)
         else:
             raise AttributeError(
@@ -29,6 +32,8 @@ class Property:
     def __set__(self, obj, value) -> None:
         """Descriptor's setter method"""
         if self.set:
+            # self.set has been set.
+            # Calling it with the passed value.
             self.set(obj, value)
         else:
             raise AttributeError(
@@ -37,6 +42,7 @@ class Property:
     def __delete__(self, obj) -> None:
         """Descriptor's delete method"""
         if self.delete:
+            # self.delete has been set
             self.delete(obj)
         else:
             raise AttributeError(
