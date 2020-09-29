@@ -20,7 +20,9 @@ class ValidString:
         Descriptor getter method.
         Returns the descriptor if called from the class,
         or the value assigned to the instance attribute, 
-        if called from the instance.
+        if called from the instance, using the instance's
+        __dict__ attribute, otherwise we would end up in 
+        a recursive loop by calling the __get__ again.
         """
         if instance is None:
             return self
@@ -32,7 +34,9 @@ class ValidString:
         Checks if the value is a valid string, as defined by the 
         self.check_valid_string method.
         If it is, stores the value in the instance's namespace,
-        with the property name itself.
+        with the property name itself, using the instance __dict__
+        attribute, otherwise we would end up in a recursive loop
+        by calling the __set__ again.
         """
         if self.check_valid_string(value):
             instance.__dict__[self.property_name] = value
@@ -59,8 +63,10 @@ class Person:
 p = Person(28)
 p_hex_address = hex(id(p)).upper()
 print(f"p address: {p_hex_address}")
+# p address: 0X3190748
 print()
 
 p.first_name = "Israel"
 p.last_name = "Mendoza"
 print(vars(p))
+# {'_Person__age': 28, 'first_name': 'Israel', 'last_name': 'Mendoza'}

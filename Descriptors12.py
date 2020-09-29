@@ -23,13 +23,16 @@ p = Point()
 # Setting and getting a value through the descriptor
 # (no instance attribute has the name "x")
 p.x = 10
+# __set__ called!
 p.x
+# __get__ called!
 
 # Forcing an entry with the name "x" in the instance dictionary
 p.__dict__["x"] = 100000
 # Accessing this "new" attribute.
 # The descriptor will be called because it is a DATA DESCRIPTOR
 p.x
+# __get__ called!
 print("\n")
 
 
@@ -54,6 +57,7 @@ p = Point()
 # Getting a value through the descriptor
 # (no instance attribute has the name "x")
 p.x
+# __get__ called!
 
 # Forcing an entry with the name "x" in the instance dictionary
 p.__dict__["x"] = 100000
@@ -61,3 +65,4 @@ p.__dict__["x"] = 100000
 # The entry in the dictionary will be called
 # because we are using a NON-DATA DESCRIPTOR
 print(p.x)
+# 100000

@@ -1,3 +1,12 @@
+"""
+Using the __set_name__ method to record the name of the
+class attribute in the descriptor instance.
+This is useful to when using the __set__ method in order
+to use the instance itself to store the value.
+__set_name__ runs just after the __init__ method.
+"""
+
+
 class ValidString:
 
     def __init__(self, min_length=0, max_length=25):
@@ -62,8 +71,11 @@ class Person:
 p = Person(28)
 p_hex_address = hex(id(p)).upper()
 print(f"p address: {p_hex_address}")
+# p address: 0X2D20748
+
 print()
 
 p.first_name = "Israel"
 p.last_name = "Mendoza"
 print(vars(p))
+# {'_Person__age': 28, '_Person__first_name': 'Israel', '_Person__last_name': 'Mendoza'}
