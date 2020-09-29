@@ -1,3 +1,5 @@
+"""Simulating how the property class works"""
+
 from numbers import Integral
 from types import FunctionType
 from typing import Any
@@ -121,15 +123,26 @@ class Point:
 
 person = Person("Israel", 28)
 print(vars(person))
+# {'_name': 'Israel', '_age': 28}
 for k, v in vars(Person).items():
     print(f"{k:12}:{v}")
+# __module__  :__main__
+# __init__    :<function Person.__init__ at 0x039E57C0>
+# name        :<__main__.Property object at 0x01BD00E8>
+# age         :<__main__.Property object at 0x01BD04C0>
+# __dict__    :<attribute '__dict__' of 'Person' objects>
+# __weakref__ :<attribute '__weakref__' of 'Person' objects>
+# __doc__     :None
 print("\n\n")
 
 point = Point(10)
 print(point)
 point.x = -10
+# Calling the x setter!
 print(point)
+# Point(-10)
 try:
     print(point.x)
 except AttributeError as error:
     print(error)
+#Point has not implemented a getter for 'x'

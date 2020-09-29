@@ -1,3 +1,5 @@
+"""Remembering how the property class works"""
+
 from numbers import Integral
 
 
@@ -21,7 +23,7 @@ try:
     p.age = -10
 except ValueError as error:
     print(error)
-
+# Age must be a positive instance
 
 class Person:
 
@@ -43,3 +45,4 @@ try:
     p.age = -10
 except ValueError as error:
     print(error)
+# Age must be a positive instance
