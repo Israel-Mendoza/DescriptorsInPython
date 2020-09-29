@@ -1,9 +1,15 @@
-from numbers import Integral, Real
+"""Applying descriptors to validate types"""
+
+from numbers import Real
 
 
 class ValidType:
 
     def __init__(self, type_):
+        """
+        Initialized the type that the descriptor
+        will validate.
+        """
         self._type = type_
 
     def __set_name__(self, cls, name):
@@ -36,3 +42,4 @@ try:
     p.height = "hello"
 except ValueError as error:
     print(error)
+# height must be a valid Real

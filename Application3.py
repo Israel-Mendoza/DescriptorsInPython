@@ -1,12 +1,9 @@
 from _collections_abc import Sequence
-from time import perf_counter
-
-start = perf_counter()
 
 
 class Integer:
     """
-    A descriptor that will set and get integer values in a given range.
+    A data descriptor that will set and get integer values in a given range.
     """
 
     def __init__(self, min_value=None, max_value=None):
@@ -244,4 +241,3 @@ except ValueError as ex:
 except TypeError as ex:
     print(ex)
 
-print(f"Time elapsed: {(perf_counter() - start):.6f}")
