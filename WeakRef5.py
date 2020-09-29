@@ -1,8 +1,30 @@
+"""
+Using a dictionary in a data descriptor to store 
+the instance's address as the key, and the value is a tuple
+containing a weak reference to the instance and a callback,
+and the value to be stored.
+The callback function in the weak reference object will be called
+when all instances pointing to that object are destroyed.
+Pros:
+    Instances don't have to be hashable.
+    The dictionary can be freed up by using the weak reference's 
+    callback function.
+Cons:
+    Doesn't work if __slots__ are impletemted (this prevents __weakref__
+    from keep weak references).
+    If __slots__ are in place, make sure they include __weakref__
+"""
+
+
 from weakref import ref
 from ctypes import c_long
 
 
 def get_ref_count(address: int) -> int:
+    """
+    Returns the reference count to the object
+    in the passed address.
+    """
     return c_long.from_address(address).value
 
 
@@ -15,7 +37,7 @@ class IntegerValue:
         """
         self.values = {}
 
-    def __get__(self, instance, type):
+    def __get__(self, instance, owner):
         """
         Descriptor getter method.
         Returns the descriptor instance if called from a class.
@@ -61,7 +83,7 @@ class Point1D:
 
     def __eq__(self, other):
         """
-        Implementing the = operator for the class.
+        Implementing the == operator for the class.
         Also, making sure this is not a hashable object.
         """
         if isinstance(other, self.__class__):
@@ -83,16 +105,23 @@ p1.x = 10
 p2.x = 20
 
 Point1D.show_x_descriptor()
+# Point1D.x's values:
+# Address 0X1BF0C28:(<weakref at 0x01C17CD0; to 'Point1D' at 0x01BF0C28>, 10)
+# Address 0X1BF0550:(<weakref at 0x01C17D20; to 'Point1D' at 0x01BF0550>, 20)
 print()
 
 del p1
 print()
 
 Point1D.show_x_descriptor()
+# Point1D.x's values:
+# Address 0X1BF0550:(<weakref at 0x01C17D20; to 'Point1D' at 0x01BF0550>, 20)
 print()
 
 del p2
 print()
 
 Point1D.show_x_descriptor()
+# Point1D.x's values:
+
 print()

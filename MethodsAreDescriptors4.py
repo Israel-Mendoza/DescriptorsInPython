@@ -6,13 +6,13 @@ class MyClassMethod:
 
     def __init__(self, a_func: FunctionType) -> None:
         self.wrapped_function = a_func
-    
-    def __set_name__(self, owner, name) -> None:
-        self.owner = owner
-        self.name = name
 
     def __get__(self, instance, owner) -> Any:
         """__get__ method which will return self.__call__"""
+        if instance is None:
+            self.owner = owner
+        else:
+            self.owner = instance.__class__
         return self.__call__
     
     def __call__(self, *args: Any, **kwds: Any) -> Any:
@@ -29,10 +29,6 @@ class MyStaticMethod:
 
     def __init__(self, a_func: FunctionType) -> None:
         self.wrapped_function = a_func
-
-    def __set_name__(self, owner, name) -> None:
-        self.owner = owner
-        self.name = name
 
     def __get__(self, instance, owner) -> Any:
         return self.__call__
@@ -60,8 +56,18 @@ class Person:
         return f"I just wanna say hi!"
 
 
+class Student(Person):
+    pass
+
+
 p = Person("Israel")
+s = Student("Israel")
 print(Person.say_hello("Mago", 1000))
 print(p.say_hello("Mago", 1000))
 print(Person.say_hi())
 print(p.say_hi())
+print()
+print(Student.say_hello("Mago", 1000))
+print(s.say_hello("Mago", 1000))
+print(Student.say_hi())
+print(s.say_hi())

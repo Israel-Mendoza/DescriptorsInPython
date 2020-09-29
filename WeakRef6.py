@@ -1,3 +1,20 @@
+"""
+Using a dictionary in a data descriptor to store 
+the instance's address as the key, and the value is a tuple
+containing a weak reference to the instance and a callback,
+and the value to be stored.
+The callback function in the weak reference object will be called
+when all instances pointing to that object are destroyed.
+Pros:
+    Instances don't have to be hashable.
+    The dictionary can be freed up by using the weak reference's 
+    callback function.
+Cons:
+    Doesn't work if __slots__ are impletemted (this prevents __weakref__
+    from keep weak references).
+    If __slots__ are in place, make sure they include __weakref__
+"""
+
 from weakref import ref
 
 
@@ -61,8 +78,10 @@ p1.first_name = "Israel"
 p1.last_name = "Mendoza"
 
 print(p1.first_name, p1.last_name)
+# Israel Mendoza
 
 try:
     p1.first_name = ""
 except ValueError as error:
     print(error)
+# String must be between 1 and 20 characters long!
